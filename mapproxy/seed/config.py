@@ -261,14 +261,9 @@ class ConfigurationBase(object):
                 grids.append(grid_name)
         else:
             # check that all caches have the same grids configured
-            last = []
-            for cache_grids in {cache.keys() for cache in caches.values()}:
-                if not last:
-                    last = cache_grids
-                else:
-                    if last != cache_grids:
-                        raise SeedConfigurationError('caches in same seed task require identical grids')
-            grids = list(last or [])
+            grids = {key for cache in caches.values() for key in cache.keys()}
+            if len(grids) > 1:
+                raise SeedConfigurationError('caches in same seed task require identical grids')
         return grids
 
     def _caches(self):
