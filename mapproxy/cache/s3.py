@@ -68,6 +68,7 @@ class S3Cache(TileCacheBase):
         self.use_http_get = use_http_get
 
         try:
+            print(f"Checking permissions for bucket {bucket_name}")
             self.bucket = self.conn().head_bucket(Bucket=bucket_name)
         except botocore.exceptions.ClientError as e:
             if e.response['Error']['Code'] == '404':
