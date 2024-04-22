@@ -283,6 +283,9 @@ class SeedConfiguration(ConfigurationBase):
         ConfigurationBase.__init__(self, name, conf, seeding_conf)
 
         self.refresh_timestamp = None
+        if 'refresh_all' in self.conf:
+            if self.conf['refresh_all']:
+                self.refresh_timestamp = 0
         if 'refresh_before' in self.conf:
             self.refresh_timestamp = before_timestamp_from_options(self.conf['refresh_before'])
 
