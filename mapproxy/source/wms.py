@@ -149,16 +149,14 @@ class WMSSource(MapLayer):
 
         src_query = MapQuery(src_bbox, src_size, src_srs, format, dimensions=query.dimensions)
 
-        if self.coverage and not self.coverage.contains(src_bbox, src_srs):
-            img = self._get_sub_query(src_query, format)
-        else:
-            resp = self.client.retrieve(src_query, format)
-            img = ImageSource(resp, size=src_size, image_opts=self.image_opts)
+        resp = self.client.retrieve(src_query, format)
+        img = ImageSource(resp, size=src_size, image_opts=self.image_opts)
 
         img = ImageTransformer(src_srs, dst_srs).transform(img, src_bbox,
                                                            query.size, dst_bbox, self.image_opts)
 
         img.format = format
+        img.as_image().save("/Users/palszabo/cors-bypass/mapproxy/single_tile_pre2.png")
         return img
 
     def _is_compatible(self, other, query):
